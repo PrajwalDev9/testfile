@@ -1,0 +1,1470 @@
+//Binary Search
+Binary:-O(logn)
+Linear:-On(n)
+
+//Design and implement Binary search algorithm using Divide and Conquer method for a given input.
+//Determine the time required to search an element
+
+#include <iostream>
+#include<math.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int main()
+{
+        int a[10000],no,i,key,mid,temp;					//for 10000 array size
+		bool found=false;								//declaration of variables
+		cout<<"<----------Program for Binary Search using Divide and Conquer Method---------->\n";
+		cout<<"\nEnter number of elements:-";				
+		cin>>no;										//taking input
+		for(int i=0;i<no;i++)						//random function
+		{
+		   	a[i]=rand()%10000;	
+		}
+		      		
+		cout<<"Elements in Array:-\n";			//dispalying the integer values generated
+		for(int i=0;i<no;i++)
+		{
+			cout<<a[i]<<" ";
+		}
+		cout<<"\nElements in Array(Sorted):-\n";		//sorting the arrays for binary search
+		for(int i=0; i<no; i++)
+		{
+			for(int j=i+1; j<no; j++)			//for loop
+			{	
+			    if(a[j] <a[i])
+			    {
+			        temp = a[i];				//swap integers for sorting smallest to largest
+			        a[i] = a[j];
+			        a[j] = temp;
+			    }
+			}
+			cout<<a[i]<<" ";       
+		}
+			        
+		cout<<"\nEnter element to be searched :";			//take input for search
+		cin>>key;
+		 
+		int first=0,last=no-1;					//variable declaration
+		 
+		while(first<=last)						//while loop
+		{
+		    mid= (first+last)/2;
+		  
+		    if(a[mid]==key)					//if condition
+		    {
+		        found=true;
+		        break;
+		    }	
+		    else if(a[mid]<key)				//else
+		    {
+		        first=mid+1;        //move to right if Larger values
+		    }
+		    else
+		    {
+		        last= mid-1;        //move to left if  Smaller values
+		    }
+	    }
+		 
+		if(found)							//if found print array index location
+		{	
+		    cout<<"Element found at position "<<mid<<endl;
+		}
+		else
+		{
+		    cout<<"Element not found\n";
+	    }
+ 
+      return 0;
+}
+-----------------------------------------------------
+//Linear Search
+Linear:-On(n)
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int a[10000], i, num, index,no,temp;				//variable declaration
+	cout<<"<----------Program for Linear Search---------->\n";
+	cout<<"\nEnter number of elements:-";
+ 	cin>>no;
+ 	
+   	for(int i=0;i<no;i++)					//for loop for random function
+   	{
+   		a[i]=rand()%10000;	
+	}
+	
+	cout<<"Elements in Array:-\n";			//taking input
+	for(int i=0;i<no;i++)
+    {
+	 	cout<<a[i]<<" ";
+	}
+	cout<<"\nElements in Array(Sorted):-\n";
+	for(i=0; i<no; i++)
+    {
+        for(int j=i+1; j<no; j++)				//for loop for sorting integers 
+        {
+            if(a[j] <a[i])
+            {
+                temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+        }
+        cout<<a[i]<<" ";
+    }
+	cout<<"\nEnter a Number to Search: ";			
+    cin>>num;
+    for(i=0; i<no; i++)					//Linear Search comparison 
+    {
+        if(a[i]==num)
+        {
+            index = i;
+            break;
+        }
+    }
+    cout<<"\nFound at Index No."<<index;			//display output index of required integer value 
+    cout<<endl;
+    return 0;
+}
+---------------------------------------------------
+//Quick Sort
+Time:-O(nlogn)
+#include <bits/stdc++.h>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+int partition(int a[], int l, int h)			//partittion function declared
+{
+    int i = l, j = h;					//Variable Declaration
+    int pivot = a[l];
+    int temp;
+    while (i < j) {					//do while loop
+        do {							
+            i++;
+        } while (a[i] <= pivot);
+        do {
+            j--;
+        } while (a[j] > pivot);
+        if (i < j) {						//if condition for swapping elements during comparison
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+    temp = a[l];
+    a[l] = a[j];
+    a[j] = temp;
+    return j;
+}
+void quicksort(int arr[], int l, int h)				//quick sort function 
+{
+    if (l < h) {
+        int j = partition(arr, l, h);
+        quicksort(arr, l, j);
+        quicksort(arr, j + 1, h);
+    }
+}
+int main()												//Main Function
+{
+    int n;
+    cout<<"<----------Program for Quick Sort using Divide and Conquer Method---------->\n";
+	cout<<"\nEnter number of elements:-";
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++) {					
+        arr[i] = (rand() % n) + 1;					//random elements generation
+    }
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    auto start = high_resolution_clock::now();
+    quicksort(arr, 0, n);
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    auto stop = high_resolution_clock::now();							//check time taken for output
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by Quick Sort: "
+         << duration.count() << " microseconds" << endl;
+    return 0;
+}
+------------------------------------------------
+//Median of Median
+Time:-O(n)
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+#include <climits>
+#include <chrono>
+using namespace std::chrono;
+using namespace std;
+class Quicksort {						//Class Quicksort declared
+public:
+    int n;
+    int A[];
+
+public:
+    int kthSmallest(int A[], int l, int r, int k);				//Variable Declaration
+    void quickSort(int A[], int l, int h);
+    void quickSort_normal(int A[], int l, int h);
+    int findMedian(int A[], int n);
+    void printArray(int A[], int size);
+    int partition(int A[], int l, int r, int x);
+    void swap(int* a, int* b);
+};
+void Quicksort::quickSort(int A[], int l, int h)				//Function call
+{
+    if (l < h) {
+        int n = h - l + 1;
+        int med = kthSmallest(A, l, h, n / 2);
+        int p = partition(A, l, h, med);
+        quickSort(A, l, p - 1);
+        quickSort(A, p + 1, h);
+    }
+}
+void Quicksort::quickSort_normal(int A[], int l, int h)		
+{
+    if (l < h) {
+        int n = h - l + 1;
+        int k = (sizeof(A) / 2) + 1;
+        int med = A[k];
+        int p = partition(A, l, h, med);
+        quickSort_normal(A, l, p - 1);
+        quickSort_normal(A, p + 1, h);
+    }
+}
+int Quicksort::findMedian(int A[], int n)		//Function for finding median 
+{
+    sort(A, A + n); // Sort the array
+    return A[n / 2]; // Return middle element
+}
+int Quicksort::kthSmallest(int A[], int l, int r, int k)	
+{
+    if (k > 0 && k <= r - l + 1) {
+        int n = r - l + 1;
+
+        int i;
+        int median[(n + 4) / 5];
+        for (i = 0; i < n / 5; i++)
+            median[i] = findMedian(A + l + i * 5, 5);
+        if (i * 5 < n) {
+            median[i] = findMedian(A + l + i * 5, n % 5);
+            i++;
+        }
+        int medOfMed = (i == 1) ? median[i - 1] : kthSmallest(median, 0, i - 1, i / 2);
+        int pos = partition(A, l, r, medOfMed);
+        if (pos - l == k - 1)
+            return A[pos];
+        if (pos - l > k - 1)
+            return kthSmallest(A, l, pos - 1, k);
+        return kthSmallest(A, pos + 1, r, k - pos + l - 1);
+    }
+    return INT_MAX;
+}
+void Quicksort::swap(int* a, int* b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int Quicksort::partition(int A[], int l, int r, int x)
+{
+    int i;
+    for (i = l; i < r; i++)
+        if (A[i] == x)
+            break;
+    swap(&A[i], &A[r]);
+    i = l;
+    for (int j = l; j <= r - 1; j++) {
+        if (A[j] <= x) {
+            swap(&A[i], &A[j]);
+            i++;
+        }
+    }
+    swap(&A[i], &A[r]);
+    return i;
+}
+void Quicksort::printArray(int A[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+        cout << A[i] << " ";
+    cout << endl;
+}
+int main()				//Main Function
+{
+    Quicksort qc;			//Object Declaration
+    int n;
+    cout<<"<----------Program for Quick Sort Median of Median---------->\n";
+    cout << "Enter the number of elements: " << endl;
+    cin >> n;
+    int A[n];
+    for (int i = 0; i < n; i++) {
+        A[i] = rand();
+    }
+    cout << "The array elements: " << endl;
+    for (int i = 0; i < n; i++) {
+        cout << A[i] << " ";
+    }
+    cout << endl;
+    auto before_nqc = high_resolution_clock::now();
+    qc.quickSort(A, 0, n - 1);					//Function call from main
+    auto after_nqc = high_resolution_clock::now();
+    auto time1 = duration_cast<microseconds>(after_nqc - before_nqc);
+    int time_for_nqc = time1.count();
+    cout << "Sorted array is\n";
+    qc.printArray(A, n);
+    cout << "\nTime taken was " << time_for_nqc;
+
+    return 0;
+}
+------------------------------
+//Minimum Cab
+
+#include<bits/stdc++.h>
+#include <chrono>
+//#define ll long long
+
+using namespace std;
+using namespace std::chrono;
+const int MAX=1440; 
+int main()
+{
+	cout<<"<----------Program for Minimum Cab Optimal Method---------->\n";
+    cout<<"Enter Value:-\n";
+    auto before_nqc = high_resolution_clock::now();
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);	
+    int n;
+    cin>>n;
+    vector<int>v(MAX,0);
+	for(int i=0;i<n;i++)
+    {
+        int h1,m1,h2,m2;				//vairable declaration
+		cin>>h1>>m1>>h2>>m2;			
+		m1=m1+(h1*60);				//conversion of hours into minutes for comparison
+		m2=m2+(h2*60);
+        for(int j=m1;j<=m2;j++)
+        {
+            v[j]+=1;
+        }
+    }
+    int res=0;
+    for(int i=0;i<MAX;i++)
+    {
+        res=max(res,v[i]);
+    }
+    cout<<"Minimum Cabs Required is:-"<<res;
+    auto after_nqc = high_resolution_clock::now();
+    auto time1 = duration_cast<microseconds>(after_nqc - before_nqc);
+    int time_for_nqc = time1.count();
+    cout << "\nTime taken was " << time_for_nqc;
+}
+-----------------------------------------
+Minimum Coins
+Time:- O(n*c) n=coin change c= no of coins 
+//Suppose we have a set of coins of denominations Cn-1, Cn-2,……C0 for some C>1. Coins of each
+//denominations are available unlimited quantity. The problem is to make up an exact amount A
+//using a minimum total number of coins
+
+
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+int main()
+{
+	int coins[4] = { 10, 5, 2, 1 };						
+	int amount;
+	cout << "Enter the amount to be calculate:- ";
+	cin >> amount;
+	auto start = high_resolution_clock::now();
+	int solution[4];
+	for (int i = 0; i < 4; i++)
+	{
+		solution[i] = 0;
+	}
+
+	
+	
+	//if amount is greater than	 coins count then amount=amount-coins[i] and add one coin as we iterate to calcuate coins nos.
+	for (int i = 0; i < 4; i++)
+	{
+		while (amount >= coins[i])			
+		{
+			amount -= coins[i];
+			solution[i] += 1;
+		}
+
+		if (amount == 0)
+			break;
+	}
+
+	auto stop = high_resolution_clock::now();
+	int Count = 0;
+	cout << "\nAnswer:- \n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\n\tCoin- " << coins[i] << " -->\t" << solution[i];
+		Count += solution[i];
+	}
+
+	cout << "\n\n\tTotal number of coins = " << Count;
+	auto duration = duration_cast<microseconds> (stop - start);
+	cout << "\nTime taken by function: " << duration.count() << "microseconds "<<endl;
+	return 0;
+}
+----------------------------------------
+//Prims 1
+Time:- O(V+E lOG(v)) V-vertices,E-edges
+#include <stdio.h>
+#include <time.h>
+
+
+using namespace std;
+
+int main()
+{
+	clock_t t;
+    t = clock();
+	int cost[10][10],i,j,min,mincost=0,n,ne=1,a,b,u,v;		//Declaration of varaibles
+	int visited[10];									
+	printf("<----------Program for Prim's Algorithm using Greedy Method---------->\n");
+	printf("Enter no. of vertices:");			//taking input
+	scanf("%d",&n);
+	
+	printf("Enter Adjacency Matrix: \n");
+	for(i=1;i<=n;i++)				//for loop to take matrix input
+	{
+	    for(int j=1;j<=n;j++)
+	    {
+	        scanf("%d",&cost[i][j]);
+	    }
+	}
+	visited[1]=1;
+	
+	while(ne<n)					//while condition for shortest path
+	{
+	    min=999;
+	    for(i=1;i<=n;i++)
+	    {
+	        for(j=1;j<=n;j++)
+	        {
+	            if(cost[i][j]<min)				//if condition for cost comparing 
+	            {
+	                if(visited[i]!=0)
+	                {
+    	                min=cost[i][j];
+    	                a=u=i;
+    	                b=v=j;
+	                }
+	            }
+	        }
+	    }
+	    
+	    if(!visited[u] || !visited[v])			//if condition for checking if node is visited previously
+	    {
+	        printf("\n%d edge (%d -> %d) = %d",ne++,a,b,min);
+	        mincost += min;
+	        visited[b]=1;
+	    }
+	    cost[a][b]=cost[b][a]=999;
+	}
+	printf("\nMinimum Cost=%d",mincost);			//display output for min cost
+	
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  
+    printf("\n\nTime taken is %f seconds to execute \n", time_taken);
+	return 0;
+}
+------------------------------------
+//Prims 2
+Time:- O(V+E lOG(v)) V-vertices,E-edges
+//Design & Implement Prims Algorithm using Greedy Approach
+
+#include<iostream>
+#include<stdio.h>
+#include<vector>
+using namespace std;
+
+int minimum_key(int k[], int mst[], int vertices)    
+{  
+    int minimum  = INT_MAX, min,i;     
+    for (i = 0; i < vertices; i++)  
+        if (mst[i] == 0 && k[i] < minimum )   
+            minimum = k[i], min = i;    
+    return min;    
+}
+
+void prim(vector<vector<int>>& vertexGraph)
+{
+	int vertices = vertexGraph.size();     
+    int parent[vertices];    
+    int k[vertices];       
+    int mst[vertices];      
+    int i, count,edge,v; 		//'v' is the vertex/  
+    for (i = 0; i < vertices; i++)  
+    {  
+        k[i] = INT_MAX;  
+        mst[i] = 0;    
+    }  
+    k[0] = 0; 
+    parent[0] = -1;   
+    for (count = 0; count < vertices-1; count++)    
+    {    
+        
+        edge = minimum_key(k, mst, vertices);    
+        mst[edge] = 1;    
+        for (v = 0; v < vertices; v++)    
+        {  
+            if (vertexGraph[edge][v] && mst[v] == 0 && vertexGraph[edge][v] <  k[v])    
+            {  
+                parent[v]  = edge, k[v] = vertexGraph[edge][v];    
+            }  
+        }  
+     }    
+     //Print the constructed Minimum spanning tree/  
+     int cost=0;
+     cout<<"\n Edge \t  Weight\n";  
+     for (i = 1; i < vertices; i++)    
+    {
+		cout<<" "<<parent[i]<<"<-->"<<i<<"    "<<vertexGraph[i][parent[i]]<< endl;
+    	cost = cost + vertexGraph[i][parent[i]];
+	}
+	cout<<"Cost of Spanning Tree is:"<<cost;
+} 
+
+int main()
+{
+	int n;
+	cout<<"Enter total number of vertices:";
+	cin>>n;
+	vector<vector<int>>vertexGraph;
+	vertexGraph.resize(n);
+	cout<<"Enter the weights for following vertices:\n";
+	for(int i=0;i<n;i++)
+	{
+		vertexGraph[i].resize(n);
+		for(int j=0;j<n;j++)
+		{
+			if(i!=j)
+			{
+				cout<<"Enter weight for edge between vertex "<<i+1<<" and "<<j+1<<" :";
+				cin>>vertexGraph[i][j];
+			}
+			else
+			{
+				vertexGraph[i][j] = 0;
+			}
+		}
+	}
+	cout<<"\n *******Printing The Matrix: *******\n";
+	for(int i =00;i<n;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			cout<<vertexGraph[i][j]<<"\t";
+		}
+		cout<<endl;
+	}
+	prim(vertexGraph);
+}
+-----------------------------------------
+//Huffman Problem
+Time:-O(nlogn)
+//Design & Implement Huffman Algorithm using Greedy Approach
+
+#include <iostream>
+#include <chrono>
+#include <queue>
+#include <string>
+using namespace std;
+struct node					//Structure Node declared
+{
+	int freq;					//here frequency is minimal variable-length character coding based on the frequency of each character
+	char data;
+	const node *child0, *child1;			//node variables delcared
+	node(char d, int f = -1)
+	{
+		data = d;
+		freq = f;
+		child0 = NULL;
+		child1 = NULL;
+	}
+
+	node(const node *c0, const node *c1)
+	{
+		data = 0;
+		freq = c0->freq + c1->freq;
+		child0 = c0;
+		child1 = c1;
+	}
+
+	bool operator < (const node &a) const
+	{
+		return freq > a.freq;
+	}
+
+	void traverse(string code = "") const
+	{
+		if (child0 != NULL)
+		{
+			child0->traverse(code + '0');
+			child1->traverse(code + '1');
+		}
+		else
+		{
+			cout << "Data: " << data << ", Frequency: " << freq << ", Code: " << code << endl;
+		}
+	}
+};
+void huffmanCoding(string str)				//Huffman Function
+{
+	priority_queue<node> qu;				//Proirity Queue
+	int frequency[256];					//256 possible byte values for input stream to build a frequency table
+	for (int i = 0; i < 256; i++)
+		frequency[i] = 0;
+	for (int i = 0; i < str.size(); i++)
+	{
+		frequency[int(str[i])]++;
+	}
+
+	for (int i = 0; i < 256; i++)
+	{
+		if (frequency[i])
+		{
+			qu.push(node(i, frequency[i]));				//push into queue after encoding
+		}
+	}
+
+	while (qu.size() > 1)
+	{
+		node *c0 = new node(qu.top());
+		qu.pop();
+		node *c1 = new node(qu.top());
+		qu.pop();
+		qu.push(node(c0, c1));
+	}
+
+	cout << "The Huffman Code: " << endl;
+	qu.top().traverse();
+}
+
+int main()
+{
+	using namespace std::chrono;
+	string str;
+	cout<<"<----------Huffman Code---------->\n\n";
+	cout << "Enter string: ";
+	getline(cin,str);
+	std::chrono::time_point<std::chrono::system_clock > start, end;
+	start = std::chrono::system_clock::now();
+	huffmanCoding(str);							//calling function
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	std::cout << "Time:" << elapsed_seconds.count() << "s\n";
+}
+------------------------------------------------
+//Travelling Salesman
+Time:-O(n^2)
+//Design & Implement Travelling salespersons Problem using Dynamic Programming. Also calculate the
+//Time complexity for this algorithm
+
+#include <iostream>						//Library Function
+#include <chrono>
+using namespace std::chrono;
+using namespace std;
+int ary[10][10], completed[10], n, cost = 0;			//Variable Declaration
+void takeInput()									//Input Function
+{
+	int i, j;
+	cout<<"<----------Travelling Salesman Problem---------->\n\n";
+	cout << "Enter the number of City: ";
+	cin >> n;
+	cout << "\nEnter the Cost Matrix\n";
+	for (i = 0; i < n; i++)
+	{
+		cout << "\nEnter Elements of Row: " << i + 1 << "\n";
+		for (j = 0; j < n; j++)
+			cin >> ary[i][j];
+		completed[i] = 0;
+	}
+
+	cout << "\n\nThe cost list is:";
+	for (i = 0; i < n; i++)
+	{
+		cout << "\n";
+		for (j = 0; j < n; j++)
+			cout << "\t" << ary[i][j];
+	}
+}
+
+int least(int c)				//least Function Declared
+{
+	int i, nc = 999;				
+	int min = 999, kmin;			
+	for (i = 0; i < n; i++)				//for loop to calcuate amount of cities in which traversing is possible
+	{
+		if ((ary[c][i] != 0) && (completed[i] == 0))
+			if (ary[c][i] + ary[i][c] < min)
+			{
+				min = ary[i][0] + ary[c][i];
+				kmin = ary[c][i];
+				nc = i;
+			}
+	}
+
+	if (min != 999)
+		cost += kmin;
+	return nc;
+}
+
+void mincost(int city)				//Min Cost Function required to calculate least cost to traverse
+{
+	int i, ncity;
+	completed[city] = 1;
+	cout << city + 1 << "--->";
+	ncity = least(city);
+	if (ncity == 999)
+	{
+		ncity = 0;
+		cout << ncity + 1;
+		cost += ary[city][ncity];
+		return;
+	}
+
+	mincost(ncity);
+}
+
+int main()					//Main Function
+{
+	takeInput();
+	auto start = high_resolution_clock::now();
+	cout << "\n\nThe Path is:\n";
+	mincost(0);
+	cout << "\n\nMinimum cost is " << cost << endl;
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds> (stop - start);
+	cout << "Time taken by TSP using Dynamic Programming is: " <<
+		duration.count() << " microseconds" << endl;
+	return 0;
+}
+--------------------------------------------------
+//N Queens 
+Time:-O(n!)./(n^2)
+//NQueens problem using backtracking
+
+#include<stdio.h>
+#include<cmath>
+void NQueens(int k, int n, int x[]);
+int place(int k, int l, int x[]);
+void print(int n, int x[]);
+
+int  main()
+{
+	 int n,x[100];
+    printf("<----------N-Queens Problem---------->\n");
+    printf("\nEnter the no. of Queens: ");
+    scanf("%d",&n);
+    
+    NQueens(1,n,x);
+    
+}
+
+
+//Using backtracking,this procedure prints all possible placements of N Queens
+//on an N * N chessboard so that they are bonattacking.
+//Invoked by NQueens(1,n)
+void NQueens(int k, int n, int x[])      	//n is the total no. of queens and k=storing the position of queen placed
+{
+	int i,j,l;
+	 
+		for(l=1; l<=n; l++)
+		{ 
+	     	if(place(k,l,x))     
+	     	{                          		//true
+	   	    	x[k] = l;
+	   	    	if(k == n)              	//All the N-Queens are place at proper position
+	   	    	 	print(n, x);            //display the result 
+	   	    	else
+	   	     		 NQueens(k + 1, n, x);  //Recursive call
+			}
+		}
+}
+
+
+//Returns true if a Queen can be placed in Kth row and Ith column.Otherwise it return False
+//x[] is a global array whose first (k-1) valuse have been set
+//Abs[r] returns the absolute valure of r.
+
+//place() is only checking the legality
+int place(int k, int l, int x[])
+{
+	int i;
+	
+	 for(i=1; i<=k-1; i++)
+	 {
+	    									//Two in the same column or in the same diagonal
+	     //if value of previous q and current q same then return 0
+		 if((x[i]==l) || (abs(x[i]-l)==abs(i-k)))
+	          return 0;						//true so we are returning 0
+	 }
+	          
+	     return 1;
+}
+
+
+void print(int n,int x[])
+{
+	int i,j,c;
+ 	printf("\n \nSolution- %d: ",++c);
+ 	printf("\n\n");
+	for(i=1; i<=n; i++)
+	    printf("\t %d",i);
+	  	for(i=1; i<=n; i++)
+	  	{
+	     	printf("\n\n%d",i);
+	    	for(j=1;j<=n;j++)
+	    	{
+	   	    	if(x[i]==j)
+	   	           printf("\tQ");   		//queen at i nd j position
+	   	    	else
+	   	           printf("\t-");   		//empty slot
+			}
+		}
+	printf("\n...................................\n");
+}
+-----------------------------------
+//Max Array Problem
+Time:- O(n)
+#include <bits/stdc++.h>
+using namespace std;
+int getMaxSum(int *arr, int n) {
+   if (n < 2) {
+      return -1;
+   }
+   int result = arr[0] + arr[1];
+   for (int i = 1; i + 1 < n; ++i) {
+      result = min(result, (arr[i] + arr[i + 1]));
+   }
+   return result;
+}
+int main() {
+   int arr[] = {10, 5, 15, 7, 2, 1, 3};
+   int n = sizeof(arr) / sizeof(arr[0]);
+   cout << "Maximum sum = " << getMaxSum(arr, n) << endl;
+   return 0;
+}
+--------------------------------------------
+//Min array Problem
+ Time:- O(n)
+#include <iostream>
+using namespace std;
+   
+int main(){
+    int input[100], count, i, min;
+       
+    cout << "Enter Number of Elements in Array\n";
+    cin >> count;
+     
+    cout << "Enter " << count << " numbers \n";
+      
+    // Read array elements
+    for(i = 0; i < count; i++){
+        cin >> input[i];
+    }
+     
+    min = input[0];
+    // search num in inputArray from index 0 to elementCount-1 
+    for(i = 0; i < count; i++){
+        if(input[i] < min){
+            min = input[i];
+        }
+    }
+ 
+    cout  << "Minimum Element\n" << min;
+ 
+    return 0;
+}
+--------------------------------------------
+//Merge Sort
+Time:--O(nlogn)
+#include <iostream>
+ 
+using namespace std;
+ 
+// A function to merge the two half into a sorted data.
+void Merge(int *a, int low, int high, int mid)
+{
+	// We have low to mid and mid+1 to high already sorted.
+	int i, j, k, temp[high-low+1];
+	i = low;
+	k = 0;
+	j = mid + 1;
+ 
+	// Merge the two parts into temp[].
+	while (i <= mid && j <= high)
+	{
+		if (a[i] < a[j])
+		{
+			temp[k] = a[i];
+			k++;
+			i++;
+		}
+		else
+		{
+			temp[k] = a[j];
+			k++;
+			j++;
+		}
+	}
+ 
+	// Insert all the remaining values from i to mid into temp[].
+	while (i <= mid)
+	{
+		temp[k] = a[i];
+		k++;
+		i++;
+	}
+ 
+	// Insert all the remaining values from j to high into temp[].
+	while (j <= high)
+	{
+		temp[k] = a[j];
+		k++;
+		j++;
+	}
+ 
+ 
+	// Assign sorted data stored in temp[] to a[].
+	for (i = low; i <= high; i++)
+	{
+		a[i] = temp[i-low];
+	}
+}
+ 
+// A function to split array into two parts.
+void MergeSort(int *a, int low, int high)
+{
+	int mid;
+	if (low < high)
+	{
+		mid=(low+high)/2;
+		// Split the data into two half.
+		MergeSort(a, low, mid);
+		MergeSort(a, mid+1, high);
+ 
+		// Merge them to get sorted output.
+		Merge(a, low, high, mid);
+	}
+}
+ 
+int main()
+{
+	int n, i;
+	cout<<"\nEnter the number of data element to be sorted: ";
+	cin>>n;
+ 
+	int arr[n];
+	for(i = 0; i < n; i++)
+	{
+		cout<<"Enter element "<<i+1<<": ";
+		cin>>arr[i];
+	}
+ 
+	MergeSort(arr, 0, n-1);
+ 
+	// Printing the sorted data.
+	cout<<"\nSorted Data ";
+	for (i = 0; i < n; i++)
+        cout<<"->"<<arr[i];
+ 
+	return 0;
+}
+-----------------------------------
+//Job Sequencing Deadline
+Time:-O(n^2)
+#include<iostream> 
+#include<algorithm> 
+using namespace std; 
+
+// A structure to represent a job 
+struct Job 
+{ 
+char id;   
+int dead; 
+int profit; 
+}; 
+
+// This function is used for sorting all the jobs according to the profit 
+bool compare(Job a, Job b) 
+{ 
+  return (a.profit > b.profit); 
+} 
+
+
+void jobschedule(Job arr[], int n) 
+{ 
+  // Sort all jobs according to decreasing order of prfit 
+  sort(arr, arr+n, compare); 
+
+  int result[n]; // To store result 
+  bool slot[n];  
+
+  // Initialize all slots to be free 
+  for (int i=0; i<n; i++) 
+    slot[i] = false; 
+
+
+  for (int i=0; i<n; i++) 
+  { 
+  // Find a free slot for this job (Note that we start 
+  // from the last possible slot) 
+  for (int j=min(n, arr[i].dead)-1; j>=0; j--) 
+  { 
+    // Free slot found 
+    if (slot[j]==false) 
+    { 
+      result[j] = i; // Add this job to result 
+      slot[j] = true; // Make this slot occupied 
+      break; 
+    } 
+  } 
+  } 
+
+  // Print the result 
+  for (int i=0; i<n; i++) 
+  if (slot[i]) 
+    cout << arr[result[i]].id << " "; 
+} 
+
+
+int main() 
+{ 
+  Job arr[] = { {'a', 2, 20}, {'b', 2, 15}, {'c', 1, 10}, 			//'job id','job deadline','job profit'
+        {'d', 3, 5}, {'e', 3, 1}}; 
+  int n = 5; 
+  cout << "maximum profit sequence of jobs is-->"; 
+  jobschedule(arr, n); 
+   
+} 
+-----------------------------------
+//Activity Selection Problem
+Time:-O(n log n)
+/* 
+I/O:-5 9 ,1 2, 3 4, 0 6, 5 7, 8 9
+*/
+#include <bits/stdc++.h>
+
+using namespace std; 
+#define N 6		// defines the number of activities
+
+// Structure represents an activity having start time and finish time. 
+struct Activity 
+{ 
+    int start, finish; 
+}; 
+
+// This function is used for sorting activities according to finish time 
+bool Sort_activity(Activity s1, Activity s2) 
+{ 
+    return (s1.finish< s2.finish); 
+} 
+
+/* 	Prints maximum number of activities that can
+	be done by a single person or single machine at a time. 
+*/
+void print_Max_Activities(Activity arr[], int n) 
+{ 
+    // Sort activities according to finish time 
+	sort(arr, arr+n, Sort_activity); 
+
+	cout<< "Following activities are selected \n"; 
+
+    // Select the first activity
+    int i = 0; 
+	cout<< "(" <<arr[i].start<< ", " <<arr[i].finish << ")\n"; 
+
+    // Consider the remaining activities from 1 to n-1 
+    for (int j = 1; j < n; j++) 
+    { 
+    	// Select this activity if it has start time greater than or equal
+    	// to the finish time of previously selected activity
+      	if (arr[j].start>= arr[i].finish) 
+      	{	 
+			cout<< "(" <<arr[j].start<< ", "<<arr[j].finish << ") \n"; 
+			i = j; 
+      	} 
+    } 
+} 
+
+// Driver program 
+int main() 
+{ 
+    Activity arr[N];
+	for(int i=0; i<=N-1; i++)
+	{
+		cout<<"Enter the start and end time of "<<i+1<<" activity \n";
+		cin>>arr[i].start>>arr[i].finish;
+    }
+
+	print_Max_Activities(arr, N); 
+    return 0; 
+}
+--------------------------------
+//0/1 Knapsack same
+Time:-O(N*W) n-no of items;w-weight of bag(capacity)
+//Io- 60,10,100,20,120,30
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+ 
+typedef struct {
+    int value;
+    int weight;
+    float density;
+}Item;
+ 
+void input(Item items[],int sizeOfItems){
+    cout << "Enter total "<< sizeOfItems <<" item's values and weight" << endl;
+    for(int i=0; i<sizeOfItems; i++){
+        cout << "Enter "<< i+1 << " Value ";
+        cin >> items[i].value;
+        cout << "Enter "<< i+1 << " Weight ";
+        cin >> items[i].weight;
+    }
+}
+ 
+void display(Item items[],int sizeOfItems){
+  cout << "values:   ";
+  for(int i=0; i<sizeOfItems; i++){
+      cout << items[i].value << "\t";
+  }
+
+  cout << endl << "weight:   ";
+  for(int i=0; i<sizeOfItems; i++){
+      cout << items[i].weight << "\t";
+  }
+  cout << endl;
+}
+ 
+bool compare(Item i1, Item i2){
+    return (i1.density > i2.density);
+}
+ 
+float knapsack(Item items[],int sizeOfItems, int W){
+    float totalValue=0, totalWeight=0;
+ 
+    //calculating density of each item
+    for(int i=0; i<sizeOfItems; i++){
+        items[i].density = items[i].value/items[i].weight;
+    }
+ 
+    //sorting w.r.t to density using compare function
+    sort(items, items+sizeOfItems,compare);
+ 
+  for(int i=0; i<sizeOfItems; i++){
+    if(totalWeight + items[i].weight<= W){
+      totalValue += items[i].value ;
+      totalWeight += items[i].weight;
+    } else {
+      int wt = W-totalWeight;
+      totalValue += (wt * items[i].density);
+      totalWeight += wt;
+      break;
+    }
+}
+  cout << "total weight in bag " << totalWeight<<endl;
+  return totalValue;
+}
+int main()
+{
+  int W;
+  Item items[3];
+  input(items,3);
+  cout << "Entered data \n";
+  display(items,3);
+  cout<< "Enter Knapsack weight \n";
+  cin >> W;
+  float mxVal = knapsack(items,3,W);
+  cout << "---Max value for "<< W <<" weight is "<< mxVal;
+ 
+  return 0;
+}
+----------------------------------------------
+Fractional knapsack
+
+// C++ program to solve fractional
+// Knapsack Problem
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Structure for an item which stores
+// weight & corresponding value of Item
+struct Item {
+	int value, weight;
+
+	// Constructor
+	Item(int value, int weight)
+		: value(value), weight(weight)
+	{
+	}
+};
+
+// Comparison function to sort Item
+// according to val/weight ratio
+bool cmp(struct Item a, struct Item b)
+{
+	double r1 = (double)a.value / a.weight;
+	double r2 = (double)b.value / b.weight;
+	return r1 > r2;
+}
+
+// Main greedy function to solve problem
+double fractionalKnapsack(struct Item arr[],
+						int N, int size)
+{
+	// Sort Item on basis of ratio
+	sort(arr, arr + size, cmp);
+
+	// Current weight in knapsack
+	int curWeight = 0;
+
+	// Result (value in Knapsack)
+	double finalvalue = 0.0;
+
+	// Looping through all Items
+	for (int i = 0; i < size; i++) {
+
+		// If adding Item won't overflow,
+		// add it completely
+		if (curWeight + arr[i].weight <= N) {
+			curWeight += arr[i].weight;
+			finalvalue += arr[i].value;
+		}
+
+		// If we can't add current Item,
+		// add fractional part of it
+		else {
+			int remain = N - curWeight;
+			finalvalue += arr[i].value
+						* ((double)remain
+							/ arr[i].weight);
+
+			break;
+		}
+	}
+
+	// Returning final value
+	return finalvalue;
+}
+
+// Driver Code
+int main()
+{
+	// Weight of knapsack
+	int N = 60;
+
+	// Given weights and values as a pairs
+	Item arr[] = { { 100, 10 },
+				{ 280, 40 },
+				{ 120, 20 },
+				{ 120, 24 } };
+
+	int size = sizeof(arr) / sizeof(arr[0]);
+
+	// Function Call
+	cout << "Maximum profit earned = "
+		<< fractionalKnapsack(arr, N, size);
+	return 0;
+}
+----------------------------------------------
+//Naive String Matching
+Time:-O(n-m+1)
+// C++ program for Naive Pattern 
+// Searching algorithm 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+void search(char* pat, char* txt) 
+{ 
+    int M = strlen(pat); 
+    int N = strlen(txt); 
+
+    /* A loop to slide pat[] one by one */
+    for (int i = 0; i <= N - M; i++) { 
+        int j; 
+
+        /* For current index i, check for pattern match */
+        for (j = 0; j < M; j++) 
+            if (txt[i + j] != pat[j]) 
+                break; 
+
+        if (j == M) // if pat[0...M-1] = txt[i, i+1, ...i+M-1] 
+            cout << "Pattern found at index "
+                << i << endl; 
+    } 
+} 
+
+// Driver Code 
+int main() 
+{ 
+    char txt[] = "AABAACAADAABAAABAA"; 
+    char pat[] = "AABA"; 
+    search(pat, txt); 
+    return 0; 
+}
+--------------------------------------------
+//KMP String1
+
+#include <iostream>
+using namespace std;
+ 
+// Function to implement the KMP algorithm
+void KMP(string text, string pattern)
+{
+    int m = text.length();
+    int n = pattern.length();
+ 
+    // if pattern is an empty string
+    if (n == 0)
+    {
+        cout << "The pattern occurs with shift 0";
+        return;
+    }
+ 
+    // if text's length is less than that of pattern's
+    if (m < n)
+    {
+        cout << "Pattern not found";
+        return;
+    }
+ 
+    // next[i] stores the index of the next best partial match
+    int next[n + 1];
+ 
+    for (int i = 0; i < n + 1; i++) {
+        next[i] = 0;
+    }
+ 
+    for (int i = 1; i < n; i++)
+    {
+        int j = next[i + 1];
+ 
+        while (j > 0 && pattern[j] != pattern[i]) {
+            j = next[j];
+        }
+ 
+        if (j > 0 || pattern[j] == pattern[i]) {
+            next[i + 1] = j + 1;
+        }
+    }
+ 
+    for (int i = 0, j = 0; i < m; i++)
+    {
+        if (text[i] == pattern[j])
+        {
+            if (++j == n) {
+                cout << "The pattern occurs with shift " << i - j + 1 << endl;
+            }
+        }
+        else if (j > 0)
+        {
+            j = next[j];
+            i--;    // since `i` will be incremented in the next iteration
+        }
+    }
+}
+ 
+// Program to implement the KMP algorithm in C++
+int main()
+{
+    string text = "ABCABAABCABAC";
+    string pattern = "CAB";
+ 
+    KMP(text, pattern);
+ 
+    return 0;
+}
+-------------------------------------------
+// KMP String2
+
+#include <iostream>
+#include <bits/stdc++.h> 
+using namespace std;
+
+/**************************************
+              LPS function
+***************************************/          
+void lps_func(string txt, vector<int>&Lps){
+    Lps[0] = 0;                   
+    int len = 0;
+    int i=1;
+    while (i<txt.length()){
+        if(txt[i]==txt[len]){   
+            len++;
+            Lps[i] = len;
+            i++;
+            continue;
+        }
+        else{                   
+            if(len==0){         
+                Lps[i] = 0;
+                i++;
+                continue;
+            }
+            else{              
+                len = Lps[len-1];
+                continue;
+            }
+        }
+    }
+}
+
+/**************************************
+              KMP Function
+***************************************/  
+void KMP(string pattern,string text){
+    int n = text.length();
+    int m = pattern.length();
+    vector<int>Lps(m);
+    
+    lps_func(pattern,Lps); // This function constructs the Lps array.
+    
+    int i=0,j=0;
+    while(i<n){
+        if(pattern[j]==text[i]){i++;j++;} // If there is a match continue.
+
+        if (j == m) { 
+            cout<<i - m <<' ';    // if j==m it is confirmed that we have found the pattern and we output the index
+                                  // and update j as Lps of last matched character.
+            j = Lps[j - 1]; 
+        } 
+        else if (i < n && pattern[j] != text[i]) {  // If there is a mismatch
+            if (j == 0)          // if j becomes 0 then simply increment the index i
+                i++;
+            else
+                j = Lps[j - 1];  //Update j as Lps of last matched character
+        }
+    }
+}
+
+int main()
+{
+    string text = "ababcdabcb";
+    string pattern = "abc";
+    KMP(pattern, text);
+    
+    return 0; 
+}
+--------------------------------------------
+
+
